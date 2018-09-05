@@ -1,0 +1,27 @@
+.cb-save.loading {
+  visibility: hidden;
+  position: relative;
+}
+
+.cb-save.loading::after {
+  display: block;
+  color: #008EC2;
+  content: '\f533';
+  visibility: visible;
+  font: 400 1em/1 dashicons;
+  text-align: center;
+  vertical-align: middle;
+  position: absolute;
+  z-index: 1;
+
+  animation: spin 1s ease 0s infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

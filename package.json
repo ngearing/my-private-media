@@ -1,0 +1,88 @@
+{
+  "name": "basic-setup",
+  "version": "1.0.0",
+  "description": "This is my basic setup for a web project.",
+  "author": "Nathan",
+  "keywords": [],
+  "repository": {
+    "type": "git",
+    "url": "ngearing/basic-setup"
+  },
+  "license": "ISC",
+  "scripts": {
+    "start": "npm run dev",
+    "lint": "stylelint src/styles/; eslint src/scripts/; phpcs --standard=WordPress ./**/*.php 2>/dev/null",
+    "prettier": "prettier src/**/* --write",
+    "webpack":
+      "NODE_ENV=development webpack --progress --hide-modules --config node_modules/laravel-mix/setup/webpack.config.js",
+    "dev":
+      "NODE_ENV=development webpack --watch --progress --hide-modules --config node_modules/laravel-mix/setup/webpack.config.js",
+    "production":
+      "NODE_ENV=production webpack --progress --hide-modules --config node_modules/laravel-mix/setup/webpack.config.js",
+    "precommit": "lint-staged",
+    "prepush":
+      "npm run production && git add dist && git commit --amend --no-edit --no-verify"
+  },
+  "lint-staged": {
+    "ignore": ["dist/"],
+    "linters": {
+      "*.php": ["phpcbf --standard=WordPress", "git add"],
+      "*.{css,scss}": ["prettier --write", "git add"],
+      "*.js": ["prettier --write", "git add"]
+    }
+  },
+  "babel": {
+    "presets": ["env"]
+  },
+  "browserslist": ["> 1%", "last 2 versions", "ie 10"],
+  "eslintConfig": {
+    "extends": ["standard", "prettier"],
+    "env": {
+      "browser": true,
+      "jquery": true
+    }
+  },
+  "postcss": {
+    "plugins": {
+      "autoprefixer": {
+        "grid": true
+      }
+    }
+  },
+  "prettier": {
+    "printWidth": 80,
+    "tabWidth": 2,
+    "semi": false,
+    "trailingComma": "all"
+  },
+  "stylelint": {
+    "extends": ["stylelint-config-recommended", "prettier"],
+    "plugins": ["stylelint-scss"],
+    "rules": {
+      "at-rule-no-unknown": null,
+      "scss/at-rule-no-unknown": true
+    }
+  },
+  "devDependencies": {
+    "browser-sync": "^2.24.7",
+    "browser-sync-webpack-plugin": "2.0.1",
+    "copy-webpack-plugin": "^4.5.1",
+    "eslint": "^5.4.0",
+    "eslint-config-prettier": "^3.0.1",
+    "eslint-config-standard": "12.0.0",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-node": "^7.0.1",
+    "eslint-plugin-promise": "^4.0.0",
+    "eslint-plugin-standard": "^4.0.0",
+    "husky": "^0.14.3",
+    "imagemin-mozjpeg": "^7.0.0",
+    "imagemin-webpack-plugin": "^2.1.1",
+    "laravel-mix": "^2.1.11",
+    "lint-staged": "^7.0.4",
+    "prettier": "^1.10.2",
+    "stylelint": "^9.5.0",
+    "stylelint-config-prettier": "^4.0.0",
+    "stylelint-config-recommended": "^2.0.1",
+    "stylelint-scss": "^3.3.0"
+  }
+}

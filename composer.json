@@ -1,0 +1,17 @@
+{
+    "name": "gg3/my-private-media",
+    "authors": [
+        {
+            "name": "Nathan Gearing",
+            "email": "natgearing@gmail.com"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "MPM\\": [
+                "lib/"
+            ]
+        }
+    }
+}
