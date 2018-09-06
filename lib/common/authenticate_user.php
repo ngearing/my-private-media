@@ -14,6 +14,9 @@ $request_uri = filter_input( INPUT_SERVER, 'REQUEST_URI' );
 define( 'WP_USE_THEMES', false );
 require_once $parsed_uri[0] . 'wp-blog-header.php';
 
+// TODO add this option to settings.
+$force_download = false;
+
 // Check if the file is private.
 global $wpdb;
 $is_private = $wpdb->get_var(
@@ -54,8 +57,10 @@ if ( ! $is_private || is_user_logged_in() ) {
 		header( 'Content-Type: ' . finfo_file( $finfo, $file ), true, 200 );
 		finfo_close( $finfo );
 
-		// Use Content-Disposition: attachment to specify the filename.
-		header( 'Content-Disposition: attachment; filename=' . basename( $file ) );
+		if ( $force_download ) {
+			// Use Content-Disposition: attachment to specify the filename.
+			header( 'Content-Disposition: attachment; filename=' . basename( $file ) );
+		}
 
 		// No cache.
 		header( 'Expires: 0' );

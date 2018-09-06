@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: My Private Media
- * Version: 1.0.0
+ * Version: 1.0.1
  * Author: Nathan Gearing
  * Author URI: https://nathangearing.com
  * Description: Make items in your Media Library private.
