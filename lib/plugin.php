@@ -19,6 +19,7 @@ class Plugin {
 
 		$this->register_admin_hooks();
 
+		// TODO only run this function when settings updated.
 		$this->update_htaccess();
 	}
 
@@ -38,7 +39,7 @@ class Plugin {
 	 * @return void
 	 */
 	private function update_htaccess() {
-		$file_types       = [ 'pdf', 'doc', 'docx' ];
+		$file_types       = [ 'pdf' ]; // TODO add setting to change this.
 		$auth_script_path = PATH . 'lib/common/authenticate_user.php';
 
 		$content = sprintf(
