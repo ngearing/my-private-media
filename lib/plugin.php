@@ -19,8 +19,11 @@ class Plugin {
 
 		$this->register_admin_hooks();
 
-		// TODO only run this function when settings updated.
-		$this->update_htaccess();
+		// TODO: only run this function when settings updated.
+		// FIX: Running this on every page load can cause some kind of apache loop
+		// which ends up resolving as the authenticate_user.php file itself and sening
+		// it to the browser.
+		// $this->update_htaccess();
 	}
 
 	/**
