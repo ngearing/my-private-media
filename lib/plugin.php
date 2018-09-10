@@ -65,7 +65,6 @@ class Plugin {
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $admin, 'enqueue_scripts' );
-
 		$this->loader->add_filter( 'manage_media_columns', $admin, 'update_post_columns' );
 		$this->loader->add_filter( 'manage_upload_sortable_columns', $admin, 'sort_post_columns' );
 		$this->loader->add_action( 'manage_media_custom_column', $admin, 'post_columns_data', 10, 2 );

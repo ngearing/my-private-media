@@ -1,59 +1,51 @@
-let mix               = require( "laravel-mix" )
-let ImageminPlugin    = require( "imagemin-webpack-plugin" ).default
-let CopyWebpackPlugin = require( "copy-webpack-plugin" )
-let imageminMozjpeg   = require( "imagemin-mozjpeg" )
-let browserslist      = require( "./package.json" ).browserslist
+let mix = require("laravel-mix")
+let ImageminPlugin = require("imagemin-webpack-plugin").default
+let CopyWebpackPlugin = require("copy-webpack-plugin")
+let imageminMozjpeg = require("imagemin-mozjpeg")
+let browserslist = require("./package.json").browserslist
 
 mix
-  .js( "src/scripts/admin.js", "dist/scripts/" )
-  // .copyDirectory( "src/images", "./dist/images" )
-  .setPublicPath( "dist" )
-.options(
-	{
-		processCssUrls: false,
-		postCss: [
-			require( "autoprefixer" )(
-				{
-					browsers: browserslist,
-				}
-			),
-	  ],
-	}
-)
-.browserSync(
-	{
-		proxy: 'altamet.local',
-		files: ["dist/**/*", "*.php", "lib/**/*"],
-	}
-)
+  .js("src/scripts/admin.js", "dist/scripts/")
+  .postCss("src/styles/admin.css", "dist/styles")
+  .setPublicPath("dist")
+  .options({
+    processCssUrls: false,
+    postCss: [
+      require("autoprefixer")({
+        browsers: browserslist,
+      }),
+    ],
+  })
+  .browserSync({
+    proxy: "altamet.local",
+    files: ["dist/**/*", "*.php", "lib/**/*"],
+  })
 
 if (mix.inProduction()) {
-	mix.version()
-	mix.webpackConfig(
-		{
-		// 	plugins: [
-		// 	// Copy the images folder and optimize all the images
-		// 	new CopyWebpackPlugin(
-		// 		[
-		// 		{
-		// 			from: "./src/images",
-		// 			to: "./images",
-		// 		},
-		// 		]
-		// 	),
-		// new ImageminPlugin(
-		// 	{
-		// 		test: /\.(jpe?g|png|gif|svg)$/i,
-		// 		optipng: { optimizationLevel: 7 },
-		// 		gifsicle: { optimizationLevel: 3 },
-		// 		pngquant: { quality: "65-90", speed: 4 },
-		// 		svgo: { removeUnknownsAndDefaults: false, cleanupIDs: false },
-		// 		plugins: [imageminMozjpeg( { quality: 60 } )],
-		// 	}
-		// ),
-		// ],
-		}
-	)
+  mix.version()
+  mix.webpackConfig({
+    // 	plugins: [
+    // 	// Copy the images folder and optimize all the images
+    // 	new CopyWebpackPlugin(
+    // 		[
+    // 		{
+    // 			from: "./src/images",
+    // 			to: "./images",
+    // 		},
+    // 		]
+    // 	),
+    // new ImageminPlugin(
+    // 	{
+    // 		test: /\.(jpe?g|png|gif|svg)$/i,
+    // 		optipng: { optimizationLevel: 7 },
+    // 		gifsicle: { optimizationLevel: 3 },
+    // 		pngquant: { quality: "65-90", speed: 4 },
+    // 		svgo: { removeUnknownsAndDefaults: false, cleanupIDs: false },
+    // 		plugins: [imageminMozjpeg( { quality: 60 } )],
+    // 	}
+    // ),
+    // ],
+  })
 }
 
 // Full API

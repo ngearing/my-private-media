@@ -15,15 +15,19 @@ class Admin {
 
 	public function enqueue_styles() {
 
-		wp_enqueue_style( "$this->name-admin-js", $this->plugin_url . '/src/styles/admin.css' );
+		wp_enqueue_style( $this->plugin_name . '-admin-css', $this->plugin_url . 'dist/styles/admin.css' );
 
 	}
 
-	public function enqueue_scripts() {
+	public function enqueue_scripts( $hook ) {
 
-		wp_register_script( "$this->name-admin-js", $this->plugin_url . '/src/scripts/admin.js', [], $this->version, true );
-		wp_localize_script( "$this->name-admin-js", 'wp', [ 'ajax_url' => admin_url( 'admin-ajax.php' ) ] );
-		wp_enqueue_script( "$this->name-admin-js" );
+		if ( 'upload.php' != $hook ) {
+			return;
+		}
+
+		wp_register_script( $this->plugin_name . '-admin-js', $this->plugin_url . 'dist/scripts/admin.js', [], $this->version, true );
+		wp_localize_script( $this->plugin_name . '-admin-js', 'wp', [ 'ajax_url' => admin_url( 'admin-ajax.php' ) ] );
+		wp_enqueue_script( $this->plugin_name . '-admin-js' );
 
 	}
 
