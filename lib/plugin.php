@@ -43,13 +43,13 @@ class Plugin {
 	 */
 	private function update_htaccess() {
 		$file_types       = [ 'pdf' ]; // TODO add setting to change this.
-		$auth_script_path = PATH . 'lib/common/authenticate_user.php';
+		$auth_script_path = URL . 'lib/common/authenticate_user.php';
 
 		$content = sprintf(
 			'RewriteEngine on' . PHP_EOL .
-			'RewriteCond %%{REQUEST_FILENAME} \.(%s)$' . PHP_EOL .
-			'RewriteCond %%{REQUEST_FILENAME} -f' . PHP_EOL .
-			'RewriteRule (.*) %s [L]',
+				'RewriteCond %%{REQUEST_FILENAME} -f' . PHP_EOL .
+				'RewriteCond %%{REQUEST_FILENAME} \.(%s)$ [NC]' . PHP_EOL .
+				'RewriteRule (.*) %s?file=$1 [L,QSA]',
 			implode( '|', $file_types ),
 			$auth_script_path
 		);
@@ -79,4 +79,3 @@ class Plugin {
 
 	}
 }
-

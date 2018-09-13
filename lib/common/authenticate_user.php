@@ -1,18 +1,23 @@
 <?php
+
 /**
  * Authenticate User before servicing a file.
- *
- * @package mpm
  */
 
 // Get WordPress location.
-$parsed_uri = explode( 'wp-content', filter_input( INPUT_SERVER, 'SCRIPT_FILENAME' ) );
+$script   = realpath( filter_input( INPUT_SERVER, 'SCRIPT_FILENAME' ) );
+$web_root = filter_input( INPUT_SERVER, 'DOCUMENT_ROOT' );
+
 // The requested file.
-$request_uri = filter_input( INPUT_SERVER, 'REQUEST_URI' );
+$request_file = filter_input( INPUT_GET, 'file' );
+
+if ( ! $request_file || __FILE__ !== $script ) {
+	exit;
+}
 
 // Init WordPress.
 define( 'WP_USE_THEMES', false );
-require_once $parsed_uri[0] . 'wp-blog-header.php';
+require_once $web_root . '/wp-load.php';
 
 // TODO add this option to settings.
 $force_download = false;
@@ -30,23 +35,25 @@ $is_private = $wpdb->get_var(
             FROM $wpdb->posts
             WHERE post_name = %s
         )",
-		sanitize_title( pathinfo( $request_uri )['filename'] )
+		sanitize_title( pathinfo( $request_file )['filename'] )
 	)
 );
+
+// Get the full path.
+$file_path = wp_upload_dir()['basedir'] . "/$request_file";
+$file_url  = wp_upload_dir()['baseurl'] . "/$request_file";
 
 // If the file is NOT private OR the user is logged in.
 // Serve the file.
 if ( ! $is_private || is_user_logged_in() ) {
 
-	$file = wp_normalize_path( ABSPATH . $request_uri );
-
 	try {
 
-		if ( ! file_exists( $file ) ) {
+		if ( ! file_exists( $file_path ) ) {
 			throw new Exception( 'File does not exist.' );
 		}
 
-		if ( ! is_readable( $file ) ) {
+		if ( ! is_readable( $file_path ) ) {
 			throw new Exception( 'File is not readable.' );
 		}
 
@@ -54,12 +61,12 @@ if ( ! $is_private || is_user_logged_in() ) {
 		$finfo = finfo_open( FILEINFO_MIME_TYPE );
 		// Send mime type AND replace status.
 		// WordPress will send a 404 status as it does not recognise this script.
-		header( 'Content-Type: ' . finfo_file( $finfo, $file ), true, 200 );
+		header( 'Content-Type: ' . finfo_file( $finfo, $file_path ), true, 200 );
 		finfo_close( $finfo );
 
 		if ( $force_download ) {
 			// Use Content-Disposition: attachment to specify the filename.
-			header( 'Content-Disposition: attachment; filename=' . basename( $file ) );
+			header( 'Content-Disposition: attachment; filename=' . basename( $file_path ) );
 		}
 
 		// No cache.
@@ -68,11 +75,12 @@ if ( ! $is_private || is_user_logged_in() ) {
 		header( 'Pragma: public' );
 
 		// Define file size.
-		header( 'Content-Length: ' . filesize( $file ) );
+		header( 'Content-Length: ' . filesize( $file_path ) );
 
+		// Send the file.
 		ob_clean();
 		flush();
-		readfile( $file );
+		readfile( $file_path );
 
 	} catch ( Exception $e ) {
 		exit( $e->getMessage() );
@@ -81,7 +89,7 @@ if ( ! $is_private || is_user_logged_in() ) {
 
 	wp_safe_redirect(
 		esc_url(
-			wp_login_url( $request_uri )
+			wp_login_url( $file_url )
 		)
 	);
 
