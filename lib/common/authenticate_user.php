@@ -19,9 +19,6 @@ if ( ! $request_file || __FILE__ !== $script ) {
 define( 'WP_USE_THEMES', false );
 require_once $web_root . '/wp-load.php';
 
-// TODO add this option to settings.
-$force_download = false;
-
 // Check if the file is private.
 global $wpdb;
 $is_private = $wpdb->get_var(
@@ -47,44 +44,37 @@ $file_url  = wp_upload_dir()['baseurl'] . "/$request_file";
 // Serve the file.
 if ( ! $is_private || is_user_logged_in() ) {
 
-	try {
+	// Generate nonce.
+	$nonce = wp_create_nonce( 'mpm_nonce' );
 
-		if ( ! file_exists( $file_path ) ) {
-			throw new Exception( 'File does not exist.' );
-		}
+	// Create cookie.
+	setcookie( 'mpm_auth', $nonce, time() + 10, '/wp-content/uploads' );
 
-		if ( ! is_readable( $file_path ) ) {
-			throw new Exception( 'File is not readable.' );
-		}
+	$root = $_SERVER['DOCUMENT_ROOT'];
 
-		// Get file mime type.
-		$finfo = finfo_open( FILEINFO_MIME_TYPE );
-		// Send mime type AND replace status.
-		// WordPress will send a 404 status as it does not recognise this script.
-		header( 'Content-Type: ' . finfo_file( $finfo, $file_path ), true, 200 );
-		finfo_close( $finfo );
-
-		if ( $force_download ) {
-			// Use Content-Disposition: attachment to specify the filename.
-			header( 'Content-Disposition: attachment; filename=' . basename( $file_path ) );
-		}
-
-		// No cache.
-		header( 'Expires: 0' );
-		header( 'Cache-Control: must-revalidate' );
-		header( 'Pragma: public' );
-
-		// Define file size.
-		header( 'Content-Length: ' . filesize( $file_path ) );
-
-		// Send the file.
-		ob_clean();
-		flush();
-		readfile( $file_path );
-
-	} catch ( Exception $e ) {
-		exit( $e->getMessage() );
+	// Delete any existsing tokens.
+	if ( ! is_readable( "$root/tmp" ) ) {
+		mkdir( "$root/tmp" );
 	}
+
+	foreach ( scandir( "$root/tmp/" ) as $token ) {
+		// Remove '.' '..' and any hidden files beginning with .
+		if ( 0 === strpos( $token, '.' ) ) {
+			continue;
+		}
+
+		if ( filemtime( $token ) < time() + 10 ) {
+			unlink( "$root/tmp/$token" );
+		}
+	}
+
+	// Create token file.
+	touch( "$root/tmp/token-$nonce" );
+
+	// Redirect to the file now.
+	// Apache will check the cookie against the token.
+	wp_safe_redirect( $file_url );
+
 } else { // Else redirect to the login page.
 
 	wp_safe_redirect(
