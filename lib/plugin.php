@@ -4,6 +4,7 @@ namespace MPM;
 
 use MPM\Common\Loader;
 use MPM\Common\htaccess;
+use MPM\Common\Admin_Page;
 use MPM\Controllers\Admin;
 
 class Plugin {
@@ -16,6 +17,8 @@ class Plugin {
 		$this->url      = $url;
 
 		$this->load_dependencies();
+
+		$this->register_admin_pages();
 
 		$this->register_admin_hooks();
 
@@ -36,6 +39,13 @@ class Plugin {
 		$this->htaccess = new htaccess( wp_upload_dir()['basedir'] . '/.htaccess' );
 	}
 
+	private function register_admin_pages() {
+		$admin_page = new Admin_Page( 'My Private Media', [ 'template_path' => dirname( __FILE__ ) . '/common/' ] );
+
+		$this->loader->add_action( 'admin_menu', $admin_page, 'register' );
+		$this->loader->add_action( 'admin_menu', $admin_page, 'configure' );
+	}
+
 	/**
 	 * Update htaccess rules.
 	 *
@@ -46,11 +56,21 @@ class Plugin {
 		$auth_script_path = URL . 'lib/common/authenticate_user.php';
 
 		$content = sprintf(
-			'RewriteEngine on' . PHP_EOL .
-				'RewriteCond %%{REQUEST_FILENAME} -f' . PHP_EOL .
-				'RewriteCond %%{REQUEST_FILENAME} \.(%s)$ [NC]' . PHP_EOL .
-				'RewriteRule (.*) %s?file=$1 [L,QSA]',
+			'RewriteEngine On' . PHP_EOL .
+			'# Check if file exists' . PHP_EOL .
+			'RewriteCond %%{REQUEST_FILENAME} -f' . PHP_EOL .
+			'# And is a pdf' . PHP_EOL .
+			'RewriteCond %%{REQUEST_FILENAME} \.(%s)$ [NC]' . PHP_EOL .
+			'# Check if cookie exists' . PHP_EOL .
+			'RewriteCond %%{HTTP_COOKIE}          !%s [OR]' . PHP_EOL .
+			'# cookie has value' . PHP_EOL .
+			'RewriteCond %%{HTTP_COOKIE}          %2$s=(\w+)' . PHP_EOL .
+			'# cookie matches token' . PHP_EOL .
+			'RewriteCond %s/token-%%1       !-f' . PHP_EOL .
+			'RewriteRule (.*) %s?file=$1 [L,QSA]',
 			implode( '|', $file_types ),
+			'mpm_auth',
+			stripslashes( ABSPATH . 'tmp' ),
 			$auth_script_path
 		);
 
@@ -71,6 +91,25 @@ class Plugin {
 
 		$this->loader->add_action( 'wp_ajax_save_meta', $admin, 'save_meta' );
 		$this->loader->add_action( 'wp_ajax_nopriv_save_meta', $admin, 'save_meta' );
+
+		$this->loader->add_action( 'admin_init', $this, 'handle_submit' );
+	}
+
+	/**
+	 * Handle admin form submittions.
+	 *
+	 * @return void
+	 */
+	public function handle_submit() {
+		if ( ! isset( $_POST['mpm'] ) ) {
+			return;
+		}
+
+		$action = $_POST['mpm']['action'];
+
+		if ( $action && method_exists( $this, $action ) ) {
+			$this->$action();
+		}
 	}
 
 	public function run() {
