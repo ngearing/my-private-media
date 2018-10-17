@@ -13,30 +13,48 @@
     "start": "npm run dev",
     "lint": "stylelint src/styles/; eslint src/scripts/; phpcs --standard=WordPress ./**/*.php 2>/dev/null",
     "prettier": "prettier src/**/* --write",
-    "webpack":
-      "NODE_ENV=development webpack --progress --hide-modules --config node_modules/laravel-mix/setup/webpack.config.js",
-    "dev":
-      "NODE_ENV=development webpack --watch --progress --hide-modules --config node_modules/laravel-mix/setup/webpack.config.js",
-    "production":
-      "NODE_ENV=production webpack --progress --hide-modules --config node_modules/laravel-mix/setup/webpack.config.js",
+    "webpack": "NODE_ENV=development webpack --progress --hide-modules --config node_modules/laravel-mix/setup/webpack.config.js",
+    "dev": "NODE_ENV=development webpack --watch --progress --hide-modules --config node_modules/laravel-mix/setup/webpack.config.js",
+    "production": "NODE_ENV=production webpack --progress --hide-modules --config node_modules/laravel-mix/setup/webpack.config.js",
     "precommit": "lint-staged",
-    "prepush":
-      "npm run production && git add dist && git commit --amend --no-edit --no-verify"
+    "prepush": "npm run production && git add dist && git commit --amend --no-edit --no-verify"
   },
   "lint-staged": {
-    "ignore": ["dist/"],
+    "ignore": [
+      "dist/",
+      "node_modules/*",
+      "vendor/*"
+    ],
     "linters": {
-      "*.php": ["phpcbf --standard=WordPress", "git add"],
-      "*.{css,scss}": ["prettier --write", "git add"],
-      "*.js": ["prettier --write", "git add"]
+      "*.php": [
+        "phpcbf --standard=WordPress --ignore=vendor",
+        "git add"
+      ],
+      "*.{css,scss}": [
+        "prettier --write",
+        "git add"
+      ],
+      "*.js": [
+        "prettier --write",
+        "git add"
+      ]
     }
   },
   "babel": {
-    "presets": ["env"]
+    "presets": [
+      "env"
+    ]
   },
-  "browserslist": ["> 1%", "last 2 versions", "ie 10"],
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "ie 11"
+  ],
   "eslintConfig": {
-    "extends": ["standard", "prettier"],
+    "extends": [
+      "standard",
+      "prettier"
+    ],
     "env": {
       "browser": true,
       "jquery": true
@@ -56,8 +74,13 @@
     "trailingComma": "all"
   },
   "stylelint": {
-    "extends": ["stylelint-config-recommended", "prettier"],
-    "plugins": ["stylelint-scss"],
+    "extends": [
+      "stylelint-config-recommended",
+      "prettier"
+    ],
+    "plugins": [
+      "stylelint-scss"
+    ],
     "rules": {
       "at-rule-no-unknown": null,
       "scss/at-rule-no-unknown": true

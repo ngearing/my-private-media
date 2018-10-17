@@ -6,5 +6,6 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'Ngearing\\Wp\\' => array($vendorDir . '/ngearing/wp/src'),
     'MPM\\' => array($baseDir . '/lib'),
 );

@@ -1,0 +1,73 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "b9b5d5fe63725744648c4b1ebb870abc",
+    "packages": [
+        {
+            "name": "ngearing/wp",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ngearing/wp-modules.git",
+                "reference": "ec347268d69e49abc807f94926aeea86f3eb16fb"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ngearing/wp-modules/zipball/ec347268d69e49abc807f94926aeea86f3eb16fb",
+                "reference": "ec347268d69e49abc807f94926aeea86f3eb16fb",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.6"
+            },
+            "require-dev": {
+                "squizlabs/php_codesniffer": "^3.2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Ngearing\\Wp\\": "src/"
+                }
+            },
+            "scripts": {
+                "test": [
+                    "phpcs --extensions=php --ignore=vendor/ ."
+                ]
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Nathan Gearing",
+                    "email": "natgearing@gmail.com",
+                    "homepage": "https://github.com/ngearing"
+                }
+            ],
+            "description": "Collection of WordPress class and functions",
+            "homepage": "https://github.com/ngearing",
+            "keywords": [
+                "php",
+                "wordpress"
+            ],
+            "support": {
+                "issues": "https://github.com/ngearing/wp/issues",
+                "source": "https://github.com/ngearing/wp-modules/tree/master"
+            },
+            "time": "2018-09-25T04:18:20+00:00"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "dev",
+    "stability-flags": {
+        "ngearing/wp": 20
+    },
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": []
+}

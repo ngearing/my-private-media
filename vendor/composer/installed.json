@@ -1,1 +1,57 @@
-[]
+[
+    {
+        "name": "ngearing/wp",
+        "version": "dev-master",
+        "version_normalized": "9999999-dev",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/ngearing/wp-modules.git",
+            "reference": "ec347268d69e49abc807f94926aeea86f3eb16fb"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/ngearing/wp-modules/zipball/ec347268d69e49abc807f94926aeea86f3eb16fb",
+            "reference": "ec347268d69e49abc807f94926aeea86f3eb16fb",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.6"
+        },
+        "require-dev": {
+            "squizlabs/php_codesniffer": "^3.2"
+        },
+        "time": "2018-09-25T04:18:20+00:00",
+        "type": "library",
+        "installation-source": "source",
+        "autoload": {
+            "psr-4": {
+                "Ngearing\\Wp\\": "src/"
+            }
+        },
+        "scripts": {
+            "test": [
+                "phpcs --extensions=php --ignore=vendor/ ."
+            ]
+        },
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Nathan Gearing",
+                "email": "natgearing@gmail.com",
+                "homepage": "https://github.com/ngearing"
+            }
+        ],
+        "description": "Collection of WordPress class and functions",
+        "homepage": "https://github.com/ngearing",
+        "keywords": [
+            "php",
+            "wordpress"
+        ],
+        "support": {
+            "issues": "https://github.com/ngearing/wp/issues",
+            "source": "https://github.com/ngearing/wp-modules/tree/master"
+        }
+    }
+]

@@ -4,7 +4,7 @@ namespace MPM;
 
 use MPM\Common\Loader;
 use MPM\Common\htaccess;
-use MPM\Common\Admin_Page;
+use Ngearing\Wp\AdminPage;
 use MPM\Controllers\Admin;
 
 class Plugin {
@@ -40,7 +40,7 @@ class Plugin {
 	}
 
 	private function register_admin_pages() {
-		$admin_page = new Admin_Page( 'My Private Media', [ 'template_path' => dirname( __FILE__ ) . '/common/' ] );
+		$admin_page = new \Ngearing\Wp\AdminPage( 'My Private Media', [ 'template_path' => dirname( __FILE__ ) . '/common/' ] );
 
 		$this->loader->add_action( 'admin_menu', $admin_page, 'register' );
 		$this->loader->add_action( 'admin_menu', $admin_page, 'configure' );

@@ -12,4 +12,7 @@ return array(
     'MPM\\Controllers\\Admin' => $baseDir . '/lib/controllers/admin.php',
     'MPM\\Deactivator' => $baseDir . '/lib/deactivator.php',
     'MPM\\Plugin' => $baseDir . '/lib/plugin.php',
+    'Ngearing\\Wp\\AdminPage' => $vendorDir . '/ngearing/wp/src/AdminPage.php',
+    'Ngearing\\Wp\\Loader' => $vendorDir . '/ngearing/wp/src/Loader.php',
+    'Ngearing\\Wp\\PostType' => $vendorDir . '/ngearing/wp/src/PostType.php',
 );

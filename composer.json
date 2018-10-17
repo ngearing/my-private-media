@@ -1,17 +1,26 @@
 {
-    "name": "gg3/my-private-media",
-    "authors": [
-        {
-            "name": "Nathan Gearing",
-            "email": "natgearing@gmail.com"
-        }
-    ],
-    "require": {},
-    "autoload": {
-        "psr-4": {
-            "MPM\\": [
-                "lib/"
-            ]
-        }
+  "name": "gg3/my-private-media",
+  "authors": [
+    {
+      "name": "Nathan Gearing",
+      "email": "natgearing@gmail.com"
     }
+  ],
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "https://github.com/ngearing/wp-modules"
+    }
+  ],
+  "require": {
+    "ngearing/wp": "dev-master"
+  },
+  "minimum-stability": "dev",
+  "autoload": {
+    "psr-4": {
+      "MPM\\": [
+        "lib/"
+      ]
+    }
+  }
 }
