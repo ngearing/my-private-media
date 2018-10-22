@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: My Private Media
- * Version: 1.0.2
+ * Version: 1.2.0
  * Author: Nathan Gearing
  * Author URI: https://nathangearing.com
  * Description: Make items in your Media Library private.
@@ -14,7 +14,7 @@ namespace MPM;
 // Setup constants.
 define( 'MPM\PATH', plugin_dir_path( __FILE__ ) );
 define( 'MPM\BASENAME', plugin_basename( __FILE__ ) );
-define( 'MPM\VERSION', '1.0.0' );
+define( 'MPM\VERSION', '1.2.0' );
 define( 'MPM\SLUG', plugin_basename( __FILE__ ) );
 define( 'MPM\URL', plugin_dir_url( __FILE__ ) );
 
