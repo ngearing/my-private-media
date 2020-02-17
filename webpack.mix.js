@@ -1,7 +1,4 @@
 let mix = require("laravel-mix")
-let ImageminPlugin = require("imagemin-webpack-plugin").default
-let CopyWebpackPlugin = require("copy-webpack-plugin")
-let imageminMozjpeg = require("imagemin-mozjpeg")
 let browserslist = require("./package.json").browserslist
 
 mix
